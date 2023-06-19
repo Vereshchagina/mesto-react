@@ -1,12 +1,32 @@
 import React from 'react';
+import api from '../utils/Api';
+import Card from './Card';
 
 
-function Main({ onEditAvatar, onEditProfile, onAddPlace }) {
+function Main({ onEditAvatar, onEditProfile, onAddPlace, onCardClick }) {
 
+  const [userName, setUserName] = React.useState('');
+  const [userDescription, setUserDescription] = React.useState('');
+  const [userAvatar, setUserAvatar] = React.useState('');
+  const [cards, setCards] = React.useState([]);
 
+  React.useEffect(() => {
+    Promise.all([api.getUserInfo(), api.getInitialCards()])
+      .then(([user, cards]) => {
+        setUserName(user.name);
+        setUserDescription(user.about);
+        setUserAvatar(user.avatar);
+        setCards(cards);
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }, []
+  )
 
   return (
     <main className="content">
+
       <section className="profile">
 
         <button
@@ -15,18 +35,18 @@ function Main({ onEditAvatar, onEditProfile, onAddPlace }) {
           onClick={onEditAvatar}>
           <img
             className="profile__image"
-            src="#"
+            src={userAvatar}
             alt="Аватар пользователя."
             name="avatar"
           />
         </button>
 
         <h1 className="profile__title" name="name">
-          Жак-Ив Кусто
+          {userName}
         </h1>
 
         <p className="profile__subtitle" name="about">
-          Исследователь океана
+          {userDescription}
         </p>
 
         <button
@@ -44,7 +64,19 @@ function Main({ onEditAvatar, onEditProfile, onAddPlace }) {
         />
 
       </section>
-      <section className="places" aria-label="Блок с карточками мест" />
+
+      <section className="places" aria-label="Блок с карточками мест">
+        {cards.map((card) => {
+          return (
+            <Card
+              key={card._id}
+              card={card}
+              onCardClick={onCardClick}
+            />
+          )
+        }
+        )}
+      </section>
     </main>
   )
 }
