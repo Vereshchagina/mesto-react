@@ -3,7 +3,7 @@ import api from '../utils/Api';
 import Card from './Card';
 
 
-function Main({ onEditAvatar, onEditProfile, onAddPlace, onCardClick }) {
+function Main({ onEditAvatar, onEditProfile, onAddPlace, onCardClick, onCardDelete }) {
 
   const [userName, setUserName] = React.useState('');
   const [userDescription, setUserDescription] = React.useState('');
@@ -72,6 +72,7 @@ function Main({ onEditAvatar, onEditProfile, onAddPlace, onCardClick }) {
               key={card._id}
               card={card}
               onCardClick={onCardClick}
+              onCardDelete={onCardDelete}
             />
           )
         }

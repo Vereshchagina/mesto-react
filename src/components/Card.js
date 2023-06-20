@@ -1,16 +1,19 @@
 import React from 'react';
 
-function Card({ card, onCardClick }) {
+function Card({ card, onCardClick, onCardDelete }) {
 
   function handleCardClick() {
     onCardClick(card)
   }
 
+  function handleCardDelete() {
+    onCardDelete(card)
+  }
 
   return (
     <article className="place">
       <img className="place__image" src={card.link} alt={card.name} onClick={handleCardClick} />
-      <button type="button" className="place__delete" aria-label="Удалить." />
+      <button type="button" className="place__delete" aria-label="Удалить." onClick={handleCardDelete} />
       <div className="place__content">
         <h2 className="place__text">{card.name}</h2>
         <div className="place__likes">
