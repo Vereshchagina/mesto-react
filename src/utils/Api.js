@@ -67,7 +67,7 @@ class Api {
   /** публичный метод для смены статуса лайка карточки */
   changeLikeCardStatus(id, isLiked) {
     return fetch(this._baseUrl + `/cards/${id}/likes`, {
-      method: isLiked ? "DELETE" : "PUT",
+      method: `${isLiked ? "PUT" : "DELETE"}`,
       headers: this._headers,
     }).then(this._handleResponseValidation);
   }

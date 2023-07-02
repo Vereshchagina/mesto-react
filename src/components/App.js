@@ -6,6 +6,7 @@ import PopupWithForm from './PopupWithForm';
 import ImagePopup from './ImagePopup';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 import api from '../utils/Api';
+import EditProfilePopup from './EditProfilePopup';
 
 function App() {
 
@@ -37,7 +38,7 @@ function App() {
     api.changeLikeCardStatus(card._id, !isLiked).then((newCard) => {
       setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
     });
-  }
+  };
 
   const handleCardDelete = (card) => {
     api.deleteCard(card._id)
@@ -47,7 +48,20 @@ function App() {
       .catch((err) => {
         console.log(err)
       })
-  }
+  };
+
+  const handleUpdateUser = ({ name, about }) => {
+    api.updateUserInfo({ name, about })
+      .then((data) => {
+        setCurrentUser(data);
+        closeAllPopups();
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  };
+
+
 
   React.useEffect(() => {
     Promise.all([api.getUserInfo(), api.getInitialCards()])
@@ -105,39 +119,7 @@ function App() {
           </span>
         </PopupWithForm>
 
-        <PopupWithForm
-          name="edit-profile"
-          title="Редактировать профиль"
-          isOpen={isEditProfilerPopupOpen}
-          onClose={closeAllPopups}
-          btnText="Сохранить">
-          <input
-            name="name"
-            type="text"
-            placeholder="Введите имя"
-            className="popup__input popup__input_type_name"
-            required=""
-            minLength={2}
-            maxLength={40}
-            id="input-name"
-          />
-          <span className="popup__input-error input-name-error">
-            Вы пропустили это поле
-          </span>
-          <input
-            name="about"
-            type="text"
-            placeholder="Введите профессию"
-            className="popup__input popup__input_type_description"
-            required=""
-            minLength={2}
-            maxLength={200}
-            id="input-description"
-          />
-          <span className="popup__input-error input-description-error">
-            Вы пропустили это поле
-          </span>
-        </PopupWithForm>
+        <EditProfilePopup isOpen={isEditProfilerPopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser} />
 
         <PopupWithForm
           name="new-card"
