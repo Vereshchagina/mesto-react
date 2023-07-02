@@ -7,6 +7,7 @@ import ImagePopup from './ImagePopup';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 import api from '../utils/Api';
 import EditProfilePopup from './EditProfilePopup';
+import EditAvatarPopup from './EditAvatarPopup'
 
 function App() {
 
@@ -61,6 +62,17 @@ function App() {
       })
   };
 
+  const handleUpdateAvatar = ({ avatar }) => {
+    api.updateUserAvatar({ avatar })
+      .then((data) => {
+        setCurrentUser(data);
+        closeAllPopups();
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }
+
 
 
   React.useEffect(() => {
@@ -100,26 +112,15 @@ function App() {
 
         <Footer />
 
-        <PopupWithForm
-          name="new-avatar"
-          title="Обновить аватар"
+        <EditAvatarPopup
           isOpen={isEditAvatarPopupOpen}
           onClose={closeAllPopups}
-          btnText="Сохранить">
-          <input
-            name="avatar"
-            type="url"
-            placeholder="Ссылка на картинку"
-            className="popup__input popup__input_type_description"
-            required=""
-            id="input-avatar"
-          />
-          <span className="popup__input-error input-avatar-error">
-            Вы пропустили это поле
-          </span>
-        </PopupWithForm>
+          onUpdateAvatar={handleUpdateAvatar} />
 
-        <EditProfilePopup isOpen={isEditProfilerPopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser} />
+        <EditProfilePopup
+          isOpen={isEditProfilerPopupOpen}
+          onClose={closeAllPopups}
+          onUpdateUser={handleUpdateUser} />
 
         <PopupWithForm
           name="new-card"
