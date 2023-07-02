@@ -64,21 +64,14 @@ class Api {
     }).then(this._handleResponseValidation);
   }
 
-  /** публичный метод для добавления лайка карточки */
-  likeCard(data) {
-    return fetch(this._baseUrl + `/cards/${data._id}/likes`, {
-      method: "PUT",
+  /** публичный метод для смены статуса лайка карточки */
+  changeLikeCardStatus(id, isLiked) {
+    return fetch(this._baseUrl + `/cards/${id}/likes`, {
+      method: isLiked ? "DELETE" : "PUT",
       headers: this._headers,
     }).then(this._handleResponseValidation);
   }
 
-  /** публичный метод снятия лайка карточки */
-  dislikeCard(data) {
-    return fetch(this._baseUrl + `/cards/${data._id}/likes`, {
-      method: "DELETE",
-      headers: this._headers,
-    }).then(this._handleResponseValidation);
-  }
 }
 
 const api = new Api({
