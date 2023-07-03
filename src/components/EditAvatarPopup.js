@@ -25,7 +25,7 @@ function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar }) {
         type="url"
         placeholder="Ссылка на картинку"
         className="popup__input popup__input_type_description"
-        required=""
+        required
         id="input-avatar"
         ref={avatarRef}
       />

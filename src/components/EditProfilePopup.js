@@ -11,7 +11,7 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
   React.useEffect(() => {
     setName(currentUser.name);
     setDescription(currentUser.about);
-  }, [currentUser]
+  }, [currentUser, isOpen]
   );
 
   const handleNameChange = (event) => {
@@ -44,7 +44,7 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
         type="text"
         placeholder="Введите имя"
         className="popup__input popup__input_type_name"
-        required=""
+        required
         minLength={2}
         maxLength={40}
         id="input-name"
@@ -59,7 +59,7 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
         type="text"
         placeholder="Введите профессию"
         className="popup__input popup__input_type_description"
-        required=""
+        required
         minLength={2}
         maxLength={200}
         id="input-description"
