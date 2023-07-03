@@ -2,12 +2,12 @@ import React from 'react';
 import Header from './Header'
 import Main from './Main';
 import Footer from './Footer'
-import PopupWithForm from './PopupWithForm';
 import ImagePopup from './ImagePopup';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 import api from '../utils/Api';
 import EditProfilePopup from './EditProfilePopup';
 import EditAvatarPopup from './EditAvatarPopup'
+import AddPlacePopup from './AddPlacePopup';
 
 function App() {
 
@@ -73,7 +73,16 @@ function App() {
       })
   }
 
-
+  const handleAddPlaceSubmit = ({ name, link }) => {
+    api.addCard({ name, link })
+      .then((newCard) => {
+        setCards([newCard, ...cards]);
+        closeAllPopups();
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }
 
   React.useEffect(() => {
     Promise.all([api.getUserInfo(), api.getInitialCards()])
@@ -115,44 +124,20 @@ function App() {
         <EditAvatarPopup
           isOpen={isEditAvatarPopupOpen}
           onClose={closeAllPopups}
-          onUpdateAvatar={handleUpdateAvatar} />
+          onUpdateAvatar={handleUpdateAvatar}
+        />
 
         <EditProfilePopup
           isOpen={isEditProfilerPopupOpen}
           onClose={closeAllPopups}
-          onUpdateUser={handleUpdateUser} />
+          onUpdateUser={handleUpdateUser}
+        />
 
-        <PopupWithForm
-          name="new-card"
-          title="Новое место"
+        <AddPlacePopup
           isOpen={isAddPlacePopupOpen}
           onClose={closeAllPopups}
-          btnText="Создать">
-          <input
-            name="name"
-            type="text"
-            placeholder="Название"
-            className="popup__input popup__input_type_name"
-            required=""
-            minLength={2}
-            maxLength={30}
-            id="input-place"
-          />
-          <span className="popup__input-error input-place-error">
-            Вы пропустили это поле
-          </span>
-          <input
-            name="link"
-            type="url"
-            placeholder="Ссылка на картинку"
-            className="popup__input popup__input_type_description"
-            required=""
-            id="input-url"
-          />
-          <span className="popup__input-error input-url-error">
-            Вы пропустили это поле
-          </span>
-        </PopupWithForm>
+          onAddPlace={handleAddPlaceSubmit}
+        />
 
         <ImagePopup
           card={selectedCard}
